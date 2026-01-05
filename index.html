@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모바일 청첩장</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+        
+        .date-info {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #e0e0e0 25%, #f5f5f5 25%, #f5f5f5 50%, #e0e0e0 50%, #e0e0e0 75%, #f5f5f5 75%, #f5f5f5);
+            background-size: 40px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #999;
+        }
+        
+        .invitation-text {
+            padding: 50px 30px;
+            text-align: center;
+            line-height: 2;
+            font-size: 15px;
+        }
+        
+        .couple-names {
+            margin: 30px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .couple-names span {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .info-section {
+            padding: 40px 30px;
+            background: #fafafa;
+        }
+        
+        .info-item {
+            margin-bottom: 30px;
+        }
+        
+        .info-item h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .info-item p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #666;
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 250px;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            margin-top: 10px;
+        }
+        
+        .contact-section {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .contact-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        
+        .parents {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        
+        .parent-group {
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .parent-group strong {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 10px 5px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .button:hover {
+            background: #764ba2;
+        }
+        
+        .footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>결혼합니다</h1>
+            <div class="date-info">
+                <p>2024년 12월 25일 수요일 오후 2시</p>
+            </div>
+        </div>
+        
+        <!-- 메인 이미지 -->
+        <div class="main-image">
+            사진 영역
+        </div>
+        
+        <!-- 초대 문구 -->
+        <div class="invitation-text">
+            <p>
+                평생을 함께할 사람을 만났습니다.<br>
+                저희 두 사람이 사랑과 믿음으로<br>
+                한 가정을 이루게 되었습니다.<br>
+                <br>
+                오셔서 축복해 주시면<br>
+                더없는 기쁨으로 간직하겠습니다.
+            </p>
+            
+            <div class="couple-names">
+                <span>김철수</span>
+                <span>♥</span>
+                <span>이영희</span>
+            </div>
+        </div>
+        
+        <!-- 혼주 정보 -->
+        <div class="contact-section">
+            <h3>혼주에게 연락하기</h3>
+            <div class="parents">
+                <div class="parent-group">
+                    <strong>신랑측</strong>
+                    <p>아버지 김아무개</p>
+                    <p>어머니 박아무개</p>
+                </div>
+                <div class="parent-group">
+                    <strong>신부측</strong>
+                    <p>아버지 이아무개</p>
+                    <p>어머니 최아무개</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 예식 정보 -->
+        <div class="info-section">
+            <div class="info-item">
+                <h3>📍 오시는 길</h3>
+                <p>
+                    서울특별시 강남구 테헤란로 123<br>
+                    그랜드 웨딩홀 3층 크리스탈홀
+                </p>
+                <div class="map-placeholder">
+                    지도 영역
+                </div>
+                <div style="margin-top: 20px;">
+                    <a href="#" class="button">카카오맵</a>
+                    <a href="#" class="button">네이버지도</a>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <h3>🚇 대중교통</h3>
+                <p>
+                    <strong>지하철</strong><br>
+                    2호선 강남역 3번 출구 도보 5분<br>
+                    <br>
+                    <strong>버스</strong><br>
+                    강남역 정류장 하차 (146, 740, 3414)
+                </p>
+            </div>
+            
+            <div class="info-item">
+                <h3>🚗 주차안내</h3>
+                <p>
+                    건물 지하 1층~3층 주차 가능<br>
+                    2시간 무료 주차 제공
+                </p>
+            </div>
+        </div>
+        
+        <!-- 푸터 -->
+        <div class="footer">
+            <p>참석이 어려우신 분들은 마음으로 축하해 주세요 ♥</p>
+        </div>
+    </div>
+</body>
+</html>
