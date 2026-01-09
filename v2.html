@@ -40,7 +40,19 @@
             font-display: swap;
         }
         @import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-display: swap;
+        }
 
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+            font-weight: 200;
+            font-display: swap;
+        }
         @font-face {
             font-family: 'Pretendard';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
@@ -458,30 +470,43 @@
 
         function copyAddress(event) {
             event.preventDefault();
-            const address = "서울 강남구 봉은사로 637";
+            const address = "서울특별시 강남구 봉은사로 637";
             
             navigator.clipboard.writeText(address).then(() => {
                 // 복사 완료 알림
-                // const notification = document.createElement('div');
-                // notification.textContent = '주소가 복사되었습니다';
-                // notification.style.cssText = `
-                //     position: fixed;
-                //     top: 50%;
-                //     left: 50%;
-                //     transform: translate(-50%, -50%);
-                //     background-color: rgba(0, 0, 0, 0.8);
-                //     color: white;
-                //     padding: 15px 30px;
-                //     border-radius: 5px;
-                //     z-index: 1000;
-                //     font-family: 'Pretendard';
-                //     font-size: 14px;
-                // `;
-                // document.body.appendChild(notification);
+                const notification = document.createElement('div');
+                notification.textContent = '주소가 복사되었습니다';
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(50, 50, 50, 0.5);
+                    color: white;
+                    padding: 11px 4px;
+                    z-index: 1000;
+                    font-family: 'Pretendard';
+                    font-size: 18px;
+                    font-weight: 100;
+                    opacity: 0;
+                `;
+                document.body.appendChild(notification);
                 
-                // setTimeout(() => {
-                //     notification.remove();
-                // }, 2000);
+                // 페이드인 (0.2초)
+                notification.style.transition = 'opacity 0.1s ease';
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                }, 10);
+                
+                // 페이드아웃 (1초)
+                setTimeout(() => {
+                    notification.style.transition = 'opacity 0.5s ease';
+                    notification.style.opacity = '0';
+                }, 1500);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 2000);
             }).catch(err => {
                 alert('복사에 실패했습니다');
             });
