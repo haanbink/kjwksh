@@ -252,7 +252,7 @@
         .footer {
             padding: 30px;
             /* height: 700px; */
-            height: 94dvh;
+            height: 92dvh;
             text-align: center;
             display: flex;
             align-items: flex-end;
@@ -382,8 +382,78 @@
         bgElement.id = 'bg';
         document.body.insertBefore(bgElement, document.body.firstChild);
         
+        // 이미지 우선순위 설정 (숫자가 낮을수록 먼저 로드)
+        const imagePriority = [
+            { src: './pic01.jpg', priority: 1 },
+            { src: './pic02.jpg', priority: 2 },
+            { src: './pic03.jpg', priority: 3 },
+            { src: './pic04.jpg', priority: 4 },
+            { src: './pic05.jpg', priority: 5 },
+            { src: './pic06.jpg', priority: 6 }
+        ];
+        
+        // 프록시 이미지 (저용량) 경로
+        const proxyImages = {
+            './pic01.jpg': './pic01_thumb.jpg',
+            './pic02.jpg': './pic02_thumb.jpg',
+            './pic03.jpg': './pic03_thumb.jpg',
+            './pic04.jpg': './pic04_thumb.jpg',
+            './pic05.jpg': './pic05_thumb.jpg',
+            './pic06.jpg': './pic06_thumb.jpg'
+        };
+        
+        let loadedImages = {};
+        
+        // 우선순위 순서대로 정렬
+        imagePriority.sort((a, b) => a.priority - b.priority);
+        
+        // 순차적으로 이미지 로드
+        function loadImageSequentially(index) {
+            if (index >= imagePriority.length) return;
+            
+            const src = imagePriority[index].src;
+            const img = new Image();
+            
+            img.onload = () => {
+                loadedImages[src] = true;
+                // 현재 표시 중인 이미지가 로드되면 교체
+                const currentBg = document.getElementById('bg').style.backgroundImage;
+                if (currentBg.includes(proxyImages[src])) {
+                    document.getElementById('bg').style.backgroundImage = `url('${src}')`;
+                }
+                // 다음 이미지 로드
+                loadImageSequentially(index + 1);
+            };
+            
+            img.onerror = () => {
+                // 로드 실패해도 다음 이미지 로드
+                loadImageSequentially(index + 1);
+            };
+            
+            img.src = src;
+        }
+        
+        // 페이지 로드 후 순차 로드 시작
+        window.addEventListener('load', () => {
+            if (proxyImages['./pic01.jpg']) {
+                document.getElementById('bg').style.backgroundImage = `url('${proxyImages['./pic01.jpg']}')`;
+            }
+            loadImageSequentially(0);
+        });
+        
         function changeBg(url) {
-        document.getElementById('bg').style.backgroundImage = `url('${url}')`;
+            // 원본이 로드되었으면 원본 사용, 아니면 프록시 사용
+            if (loadedImages[url]) {
+                document.getElementById('bg').style.backgroundImage = `url('${url}')`;
+            } else {
+                // 프록시 이미지가 있으면 먼저 표시
+                const proxyUrl = proxyImages[url];
+                if (proxyUrl) {
+                    document.getElementById('bg').style.backgroundImage = `url('${proxyUrl}')`;
+                } else {
+                    document.getElementById('bg').style.backgroundImage = `url('${url}')`;
+                }
+            }
         }
     </script>
 </body>
