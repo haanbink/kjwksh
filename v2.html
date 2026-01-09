@@ -76,20 +76,8 @@
         body {
             font-family: 'SunBatang-Light', serif;
             overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('pic01.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         #bg {
@@ -102,7 +90,7 @@
             background-position: center;
             background-repeat: no-repeat;
             z-index: -1;
-            background-image: url('000034_1.jpg');
+            background-image: url('pic01.jpg');
         }
 
         p {
@@ -346,7 +334,7 @@
             </div>
             <div class="info-item">
                 <h4>주차안내</h4><br>
-                <p>본 식장이 혼잡할 경우 별관 주차장을 이용 부탁드립니다.<br>(셔틀 이용가능)</p>
+                <p>본 식장이 혼잡할 경우 별관 주차장*을 이용 부탁드립니다.______*강남구 봉은사로 610(셔틀 이용가능)</p>
             </div>
             <div class="info-item">
                 <h4>셔틀버스</h4><br>
@@ -393,6 +381,23 @@
         const bgElement = document.createElement('div');
         bgElement.id = 'bg';
         document.body.insertBefore(bgElement, document.body.firstChild);
+
+        const fontsToLoad = [
+            new FontFace('SunBatang-Light', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/SunBatang-Light.woff)'),
+            new FontFace('SunBatang-Medium', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/SunBatang-Medium.woff)'),
+            new FontFace('Pretendard', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2)', { weight: '400' }),
+            new FontFace('Pretendard', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2)', { weight: '100' })
+        ];
+        
+        Promise.all(fontsToLoad.map(font => font.load().then(f => document.fonts.add(f))))
+            .then(() => {
+                console.log('주요 폰트 로드 완료');
+                loadImageSequentially(0);
+            })
+            .catch(err => {
+                console.log('폰트 로드 실패, 이미지 로드 시작');
+                loadImageSequentially(0);
+            });
         
         // 이미지 우선순위 설정 (숫자가 낮을수록 먼저 로드)
         const imagePriority = [
