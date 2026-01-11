@@ -121,6 +121,11 @@
             background-color: white;
         }
 
+        h4.active {
+            background-color: #197F42;
+            color: white;
+        }
+
         h5 {
             padding: 7px 1px;
             line-height: 2.0;
@@ -245,11 +250,15 @@
             align-items: start;
             overflow: hidden;
             transition: max-height 0.3s ease;
-            max-height: 0;
+            max-height: 500px;
         }
 
         .acc-grid.open {
             max-height: 500px;
+        }
+
+        .acc-grid.closed {
+            max-height: 0;
         }
 
         .acc-grid p {
@@ -386,10 +395,10 @@
                 </p>
             </div>
             <div class="info-item" style="padding-top: 75px;">
-                <h3>축의금 전하기</h3><br><br><br>
-                <h5 onclick="toggleAccount('gr')" style="cursor: pointer;">
-                    <span id="gr-arrow">▷</span>신랑측
-                </h5><br><br>
+                <h3>축의금 전하기</h3><br><br>
+                <div style="text-align: right;">
+                    <h4 onclick="toggleAccount('gr')" style="cursor: pointer;" class="active">성현네</h4>
+                </div><br>
                 <div class="acc-grid" id="gr-acc">
                     <div>
                         <p>김성현</p>
@@ -416,9 +425,9 @@
                         </p>
                     </div>
                 </div><br>
-                <h5 onclick="toggleAccount('br')" style="cursor: pointer;">
-                    <span id="br-arrow">▷</span>신부측
-                </h5><br><br>
+                <div style="text-align: right;">
+                    <h4 onclick="toggleAccount('br')" style="cursor: pointer;" class="active">지우네</h4>
+                </div><br>
                 <div class="acc-grid" id="br-acc">
                     <div>
                         <p>김지우</p>
@@ -562,7 +571,7 @@
             }
         }
 
-        function copyText(event, text, message) {
+        function copyText(event, text, type) {
             event.preventDefault();
 
             const messages = {
@@ -615,17 +624,17 @@
         }
 
         function toggleAccount(type) {
-    const content = document.getElementById(type + '-acc');
-    const arrow = document.getElementById(type + '-arrow');
-    
-    if (content.classList.contains('open')) {
-        content.classList.remove('open');
-        arrow.textContent = '▷';
-    } else {
-        content.classList.add('open');
-        arrow.textContent = '▽';
-    }
-}
+            const content = document.getElementById(type + '-acc');
+            const button = event.target.closest('h4');
+            
+            if (content.classList.contains('closed')) {
+                content.classList.remove('closed');
+                button.classList.add('active');
+            } else {
+                content.classList.add('closed');
+                button.classList.remove('active');
+            }
+        }
     </script>
 </body>
 </html>
