@@ -8,10 +8,10 @@
     <meta name="color-scheme" content="light only">
     <meta name="supported-color-schemes" content="light">
     <title>김지우 & 김성현</title>
-    <meta name="description" content="2026년 3월 14일 낮 3시, 노블발렌티 삼성점">
+    <meta name="description" content="2026년 3월 14일 오후 3시, 노블발렌티 삼성점">
     <meta name="robots" content="index, follow">
     <meta property="og:locale" content="ko_KR">
-    <meta property="og:title" content="2026년 3월 14일 낮 3시">
+    <meta property="og:title" content="2026년 3월 14일 오후 3시">
     <meta property="og:description" content="노블발렌티 삼성점">
     <meta property="og:url" content="">
     <meta property="og:image" content="./ogthumb.jpg" />
@@ -24,9 +24,8 @@
 
     <link rel="preload" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/SunBatang-Light.woff" as="font" type="font/woff" crossorigin>
     <link rel="preload" href="./pic01_thumb.jpg" as="image">
-
+    
     <style>
-
         @font-face {
             font-family: 'SunBatang-Light';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/SunBatang-Light.woff') format('woff');
@@ -57,7 +56,6 @@
             font-weight: 300;
             font-display: swap;
         }
-
         @font-face {
             font-family: 'Pretendard';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
@@ -243,14 +241,12 @@
         }
 
         .map-error {
+            position: relative;
             display: none;
-            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            padding: 20px;
-            background: white;
         }
 
         #map {
@@ -356,9 +352,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 9999;
-            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
-            border-radius: 8px;
             display: none;
         }
 
@@ -370,7 +364,7 @@
 </head>
 <body>
     <div class="loading" id="loading" aria-live="polite">
-        <p>loading</p>
+        <p>loading...</p>
     </div>
     <div class="container">
         <div class="header">
@@ -431,8 +425,8 @@
                 <div class="map-placeholder">
                     <div id="map" role="img" aria-label="노블발렌티 삼성점 지도"></div>
                     <div class="map-error" id="mapError">
-                        <p>지도를 불러올 수 없습니다</p>
-                        <p style="font-size: 12px; margin-top: 10px;">아래 링크를 이용해주세요</p>
+                        <p>지도를 불러올 수 없습니다</p><br>
+                        <p style="margin-top: 10px;">아래 링크를 이용해주세요</p>
                     </div>
                 </div>
                 <div class="applink">
