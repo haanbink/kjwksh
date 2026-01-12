@@ -307,10 +307,19 @@
             overflow-x: auto;
             overflow-y: hidden;
             padding-bottom: 8px;
+            padding-left: 24px;
             scrollbar-width: none;
             -ms-overflow-style: none;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+        }
+
+        .gallery::after {
+            content: '';
+            display: block;
+            /* 이 min-width 값이 오른쪽 여백 역할을 합니다 */
+            flex: 0 0 10px;
+            width: 10px;
         }
 
         .gallery::-webkit-scrollbar {
@@ -516,14 +525,14 @@
             </div>
         </div>
         <div class="gallery">
-            <div style="margin-left: 10px;"></div>
+            <!-- <div style="margin-left: 10px;"></div> -->
             <img src="./pic02.jpg" alt="사진 1" onclick="changeBg('./pic02.jpg')">
             <img src="./pic03.jpg" alt="사진 2" onclick="changeBg('./pic03.jpg')">
             <img src="./pic04.jpg" alt="사진 3" onclick="changeBg('./pic04.jpg')">
             <img src="./pic05.jpg" alt="사진 4" onclick="changeBg('./pic05.jpg')">
             <img src="./pic06.jpg" alt="사진 5" onclick="changeBg('./pic06.jpg')">
             <img src="./pic01.jpg" alt="사진 6" onclick="changeBg('./pic01.jpg')">
-            <div style="margin-right: 10px;"></div>
+            <!-- <div style="margin-right: 10px;"></div> -->
         </div>
         <div class="footer">
             <div>            
