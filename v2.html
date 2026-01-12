@@ -515,12 +515,6 @@
     <script>
         document.getElementById('loading').classList.add('show');
 
-        Promise.all(fontsToLoad.map(...))
-            .then(() => {
-                loadImageSequentially(0);
-                document.getElementById('loading').classList.remove('show');
-            });
-
         const bgElement = document.createElement('div');
         bgElement.id = 'bg';
         document.body.insertBefore(bgElement, document.body.firstChild);
@@ -536,6 +530,7 @@
             .then(() => {
                 console.log('주요 폰트 로드 완료');
                 loadImageSequentially(0);
+                document.getElementById('loading').classList.remove('show');
             })
             .catch(err => {
                 console.log('폰트 로드 실패, 이미지 로드 시작');
@@ -708,33 +703,43 @@
     <script>
         // 네이버 지도 초기화
         window.addEventListener('load', function() {
-            var mapOptions = {
-                center: new naver.maps.LatLng(37.515480, 127.064838), // 노블발렌티 삼성점 좌표
-                zoom: 17,
-                zoomControl: false
-            };
-
-            var map = new naver.maps.Map('map', mapOptions);
-
-            // 마커 추가
-            var marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(37.515480, 127.064838),
-                map: map,
-                title: '노블발렌티 삼성점'
-            });
-
-            // 정보 창 추가 (선택사항)
-            var infoWindow = new naver.maps.InfoWindow({
-                content: '<div style="padding:10px;font-size:12px;">노블발렌티 삼성점</div>'
-            });
-
-            naver.maps.Event.addListener(marker, "click", function(e) {
-                if (infoWindow.getMap()) {
-                    infoWindow.close();
-                } else {
-                    infoWindow.open(map, marker);
+            try {
+                if (typeof naver === 'undefined' || !naver.maps) {
+                    throw new Error('지도 API 로드 실패');
                 }
-            });
+
+                var mapOptions = {
+                    center: new naver.maps.LatLng(37.515480, 127.064838), // 노블발렌티 삼성점 좌표
+                    zoom: 17,
+                    zoomControl: false
+                };
+
+                var map = new naver.maps.Map('map', mapOptions);
+
+                // 마커 추가
+                var marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(37.515480, 127.064838),
+                    map: map,
+                    title: '노블발렌티 삼성점'
+                });
+
+                // 정보 창 추가 (선택사항)
+                var infoWindow = new naver.maps.InfoWindow({
+                    content: '<div style="padding:10px;font-size:12px;">노블발렌티 삼성점</div>'
+                });
+
+                naver.maps.Event.addListener(marker, "click", function(e) {
+                    if (infoWindow.getMap()) {
+                        infoWindow.close();
+                    } else {
+                        infoWindow.open(map, marker);
+                    }
+                });
+            } catch (error) {
+                console.error('지도 오류:', error);
+                document.getElementById('map').style.display = 'none';
+                document.getElementById('mapError').style.display = 'block';
+            }
         });
     </script>
 </body>
