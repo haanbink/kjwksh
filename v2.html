@@ -10,7 +10,7 @@
     <title>김지우 & 김성현</title>
     <meta name="robots" content="index, follow">
     <meta property="og:locale" content="ko_KR">
-    <meta property="og:title" content="2026년 3월 14일 오후 3시">
+    <meta property="og:title" content="2016년 3월 14일 오후 3시">
     <meta property="og:description" content="노블발렌티 삼성점">
     <meta property="og:url" content="">
     <meta property="og:image" content="./ogthumb.jpg" />
@@ -364,7 +364,8 @@
                     </svg>
                 </h5>
                 <div class="map-placeholder">
-                    지도 영역
+                    <div id="map"></div>
+                    <code id="snippet" class="snippet"></code>
                 </div>
                 <div class="applink">
                     <a href="https://tmap.life/fca727ea" class="button" target="_blank">티맵↗</a>
@@ -627,6 +628,11 @@
                 button.classList.remove('active');
             }
         }
+    </script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=zflqezpjkl"></script>
+    <script id="code">
+        var mapDiv = document.getElementById('map');
+        var map = new naver.maps.Map(mapDiv);
     </script>
 </body>
 </html>
