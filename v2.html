@@ -2,12 +2,13 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="color-scheme" content="light only">
     <meta name="supported-color-schemes" content="light">
     <title>김지우 & 김성현</title>
+    <meta name="description" content="2026년 3월 14일 오후 3시, 노블발렌티 삼성점">
     <meta name="robots" content="index, follow">
     <meta property="og:locale" content="ko_KR">
     <meta property="og:title" content="2016년 3월 14일 오후 3시">
@@ -20,6 +21,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="192x192" href="./android-chrome-192x192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+
+    <link rel="preload" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/SunBatang-Light.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="./pic01_thumb.jpg" as="image">
+
     <style>
 
         @font-face {
@@ -77,21 +82,26 @@
         body {
             font-family: 'SunBatang-Light', serif;
             overflow-x: hidden;
+            background: #FFFEFA;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            touch-action: pan-y pinch-zoom;
         }
 
         #bg {
             position: fixed;
             top: 0;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
+            max-width: 500px;
             height: 100%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             z-index: -1;
             background-image: url('pic01.jpg');
+            transition: background-image 0.1s ease;
         }
 
         p {
@@ -211,6 +221,17 @@
             margin-top: 10px;
         }
 
+        .map-error {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+            background: white;
+        }
+
         #map {
             width: 100%;
             height: 100%;
@@ -233,7 +254,6 @@
             font-family: 'Pretendard';
             display: inline-block;
             text-decoration: none;
-            /* text-underline-offset: 3px; */
             font-size: 14px;
             font-weight: 400;
             color: black;
@@ -273,6 +293,9 @@
             padding-bottom: 8px;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x pinch-zoom;
         }
 
         .gallery::-webkit-scrollbar {
@@ -288,7 +311,7 @@
         
         .footer {
             padding: 30px;
-            /* height: 700px; */
+            height: 100vh;
             height: 100dvh;
             text-align: center;
             display: flex;
@@ -300,9 +323,47 @@
             line-height: 1.8;
             white-space: normal;
         }
+
+        @supports (-webkit-touch-callout: none) {
+            .footer {
+                height: -webkit-fill-available;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+
+        /* 로딩 인디케이터 */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+        
     </style>
 </head>
 <body>
+    <div class="loading" id="loading" aria-live="polite">
+        <p>청첩장을 불러오는 중...</p>
+    </div>
     <div class="container">
         <div class="header">
             <?xml version="1.0" encoding="UTF-8"?>
@@ -361,8 +422,11 @@
                     </svg>
                 </h5>
                 <div class="map-placeholder">
-                    <div id="map"></div>
-                    <code id="snippet" class="snippet"></code>
+                    <div id="map" role="img" aria-label="노블발렌티 삼성점 지도"></div>
+                    <div class="map-error" id="mapError">
+                        <p>지도를 불러올 수 없습니다</p>
+                        <p style="font-size: 12px; margin-top: 10px;">아래 링크를 이용해주세요</p>
+                    </div>
                 </div>
                 <div class="applink">
                     <a href="https://tmap.life/fca727ea" class="button" target="_blank">티맵↗</a>
@@ -487,7 +551,6 @@
                 loadImageSequentially(0);
             });
         
-        // 이미지 우선순위 설정 (숫자가 낮을수록 먼저 로드)
         const imagePriority = [
             { src: './pic01.jpg', priority: 1 },
             { src: './pic02.jpg', priority: 2 },
@@ -497,7 +560,6 @@
             { src: './pic06.jpg', priority: 6 }
         ];
         
-        // 프록시 이미지 (저용량) 경로
         const proxyImages = {
             './pic01.jpg': './pic01_thumb.jpg',
             './pic02.jpg': './pic02_thumb.jpg',
@@ -508,11 +570,8 @@
         };
         
         let loadedImages = {};
-        
-        // 우선순위 순서대로 정렬
         imagePriority.sort((a, b) => a.priority - b.priority);
         
-        // 순차적으로 이미지 로드
         function loadImageSequentially(index) {
             if (index >= imagePriority.length) return;
             
@@ -521,24 +580,20 @@
             
             img.onload = () => {
                 loadedImages[src] = true;
-                // 현재 표시 중인 이미지가 로드되면 교체
                 const currentBg = document.getElementById('bg').style.backgroundImage;
                 if (currentBg.includes(proxyImages[src])) {
                     document.getElementById('bg').style.backgroundImage = `url('${src}')`;
                 }
-                // 다음 이미지 로드
                 loadImageSequentially(index + 1);
             };
             
             img.onerror = () => {
-                // 로드 실패해도 다음 이미지 로드
                 loadImageSequentially(index + 1);
             };
             
             img.src = src;
         }
         
-        // 페이지 로드 후 순차 로드 시작
         window.addEventListener('load', () => {
             if (proxyImages['./pic01.jpg']) {
                 document.getElementById('bg').style.backgroundImage = `url('${proxyImages['./pic01.jpg']}')`;
@@ -547,11 +602,9 @@
         });
         
         function changeBg(url) {
-            // 원본이 로드되었으면 원본 사용, 아니면 프록시 사용
             if (loadedImages[url]) {
                 document.getElementById('bg').style.backgroundImage = `url('${url}')`;
             } else {
-                // 프록시 이미지가 있으면 먼저 표시
                 const proxyUrl = proxyImages[url];
                 if (proxyUrl) {
                     document.getElementById('bg').style.backgroundImage = `url('${proxyUrl}')`;
@@ -628,39 +681,70 @@
                 arrow.textContent = '↙';
             }
         }
+        const gallery = document.querySelector('.gallery');
+        if (gallery) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            gallery.addEventListener('mousedown', (e) => {
+                isDown = true;
+                gallery.style.cursor = 'grabbing';
+                startX = e.pageX - gallery.offsetLeft;
+                scrollLeft = gallery.scrollLeft;
+            });
+
+            gallery.addEventListener('mouseleave', () => {
+                isDown = false;
+                gallery.style.cursor = 'grab';
+            });
+
+            gallery.addEventListener('mouseup', () => {
+                isDown = false;
+                gallery.style.cursor = 'grab';
+            });
+
+            gallery.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - gallery.offsetLeft;
+                const walk = (x - startX) * 2;
+                gallery.scrollLeft = scrollLeft - walk;
+            });
+        }
     </script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=zflqezpjkl"></script>
-<script>
-    // 네이버 지도 초기화
-    window.addEventListener('load', function() {
-        var mapOptions = {
-            center: new naver.maps.LatLng(37.515480, 127.064838), // 노블발렌티 삼성점 좌표
-            zoom: 17,
-            zoomControl: false
-        };
+    <script>
+        // 네이버 지도 초기화
+        window.addEventListener('load', function() {
+            var mapOptions = {
+                center: new naver.maps.LatLng(37.515480, 127.064838), // 노블발렌티 삼성점 좌표
+                zoom: 17,
+                zoomControl: false
+            };
 
-        var map = new naver.maps.Map('map', mapOptions);
+            var map = new naver.maps.Map('map', mapOptions);
 
-        // 마커 추가
-        var marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng(37.515480, 127.064838),
-            map: map,
-            title: '노블발렌티 삼성점'
+            // 마커 추가
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(37.515480, 127.064838),
+                map: map,
+                title: '노블발렌티 삼성점'
+            });
+
+            // 정보 창 추가 (선택사항)
+            var infoWindow = new naver.maps.InfoWindow({
+                content: '<div style="padding:10px;font-size:12px;">노블발렌티 삼성점</div>'
+            });
+
+            naver.maps.Event.addListener(marker, "click", function(e) {
+                if (infoWindow.getMap()) {
+                    infoWindow.close();
+                } else {
+                    infoWindow.open(map, marker);
+                }
+            });
         });
-
-        // 정보 창 추가 (선택사항)
-        var infoWindow = new naver.maps.InfoWindow({
-            content: '<div style="padding:10px;font-size:12px;">노블발렌티 삼성점</div>'
-        });
-
-        naver.maps.Event.addListener(marker, "click", function(e) {
-            if (infoWindow.getMap()) {
-                infoWindow.close();
-            } else {
-                infoWindow.open(map, marker);
-            }
-        });
-    });
-</script>
+    </script>
 </body>
 </html>
