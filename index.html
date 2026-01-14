@@ -385,23 +385,32 @@
             font-size: 13px;
         }
 
-        .loading {
+        #loading {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            padding: 20px;
-            display: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FFFEFA;
+            opacity: 50%;
+            z-index: 99999;     
+            display: flex;          
+            justify-content: center; 
+            align-items: center;   
+            transition: opacity 0.5s ease;
         }
 
-        .loading.show {
-            display: block;
+        #loading p {
+            font-family: 'Pretendard', sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            color: black;
         }
+
     </style>
 </head>
 <body>
-    <div class="loading" id="loading" aria-live="polite">
+    <div id="loading" class="loading">
         <p>loading...</p>
     </div>
     <div class="container">
@@ -608,7 +617,6 @@
             } catch(e) { console.log('Font load error', e); }
         }
 
-        // 이미지 로딩 함수 (Promise)
         function loadImage(src) {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -618,25 +626,20 @@
             });
         }
 
-        // 로딩 화면 제거 함수
         function removeLoadingScreen() {
             const loader = document.getElementById('loading');
             if (loader) {
-                loader.style.opacity = '0'; // 페이드 아웃 효과 (CSS transition 필요)
+                loader.style.opacity = '0'; 
                 setTimeout(() => {
                     loader.style.display = 'none';
-                }, 500); // 0.5초 뒤 완전히 제거
+                }, 500); 
             }
         }
 
         // 3. 메인 실행 로직 (우선순위 제어)
         async function initPage() {
-            // [초기 설정] 폰트 300 강제 적용 클래스 추가
             document.body.classList.add('initial-mode');
 
-            // ----------------------------------------------------
-            // 1단계: 헤더 썸네일(프록시) & 폰트 300 동시 로딩
-            // ----------------------------------------------------
             const p1_Header = loadImage(proxyImages['./pic01.jpg']).then(() => {
                 document.querySelector('.header').style.backgroundImage = `url('${proxyImages['./pic01.jpg']}')`;
             });
@@ -644,18 +647,15 @@
             
             await Promise.all([p1_Header, p1_Font]);
 
-            // ----------------------------------------------------
-            // 2단계: 갤러리 썸네일(프록시) 로딩 및 표시
-            // ----------------------------------------------------
             const galleryImgs = document.querySelectorAll('.gallery img');
             const thumbPromises = [];
 
             galleryImgs.forEach((img) => {
-                const originalSrc = img.getAttribute('data-orig'); // HTML에서 data-orig 읽기
+                const originalSrc = img.getAttribute('data-orig'); //
                 if (originalSrc && proxyImages[originalSrc]) {
                     const thumbSrc = proxyImages[originalSrc];
                     const p = loadImage(thumbSrc).then(() => {
-                        img.src = thumbSrc; // 투명 이미지를 썸네일로 교체
+                        img.src = thumbSrc;
                     });
                     thumbPromises.push(p);
                 }
@@ -663,25 +663,14 @@
 
             await Promise.all(thumbPromises);
 
-            // ----------------------------------------------------
-            // 3단계: ✨ 로딩 화면 제거 ✨ (사용자에게 화면 보여줌)
-            // ----------------------------------------------------
             console.log("Visuals Ready -> Remove Loading");
             removeLoadingScreen();
 
-            // ----------------------------------------------------
-            // 4단계: 나머지 폰트 순차 로딩 (무거운 리소스 시작)
-            // ----------------------------------------------------
             await loadFont('600');
             await loadFont('500');
             await loadFont('400');
             
-            // 모든 폰트 로딩 완료 -> 강제 300 모드 해제
             document.body.classList.remove('initial-mode');
-
-            // ----------------------------------------------------
-            // 5단계: 원본 이미지 백그라운드 로딩 (고화질 교체)
-            // ----------------------------------------------------
             
             // 5-1. 헤더 원본 교체
             loadImage('./pic01.jpg').then(() => {
@@ -689,9 +678,9 @@
                 loadedImages['./pic01.jpg'] = true;
             });
 
-            // 5-2. 갤러리 원본 캐싱 (화면 교체 없이 메모리에만 로드해둠 -> 라이트박스 클릭 시 빠름)
+            // 5-2. 갤러리 원본 캐싱
             images.forEach(src => {
-                if (src === './pic01.jpg') return; // 헤더는 이미 위에서 함
+                if (src === './pic01.jpg') return;
                 const img = new Image();
                 img.src = src;
                 img.onload = () => { loadedImages[src] = true; };
@@ -700,11 +689,6 @@
 
         // 페이지 로드 시작
         initPage();
-
-
-        // ============================================================
-        // 이하 기능 함수들 (라이트박스, 지도, 복사 등 - 기존 유지)
-        // ============================================================
 
         let currentImageIndex = 0;
         let currentIndex = 0;
