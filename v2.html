@@ -12,6 +12,7 @@
         (function() {
             const thumbImg = new Image();
             thumbImg.src = './pic01_thumb.jpg';
+            
             thumbImg.onload = function() {
                 window.__thumbLoaded = true;
                 window.__thumbUrl = './pic01_thumb.jpg';
@@ -288,7 +289,6 @@
         .gallery::after {
             content: '';
             display: block;
-            /* 이 min-width 값이 오른쪽 여백 역할을 합니다 */
             flex: 0 0 10px;
             width: 10px;
         }
@@ -326,7 +326,6 @@
             white-space: normal;
         }
 
-        /* 로딩 인디케이터 */
         .loading {
             position: fixed;
             top: 50%;
@@ -384,9 +383,6 @@
             <p><strong>양금순</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>김태욱의</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>아들</strong></p><p style="text-align: right;"><strong>성현</strong></p>
             <p><strong>김지연</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>김택군의</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>딸</strong></p><p style="text-align: right;"><strong>지우</strong></p>
         </div>
-        <!-- <div class="comments">
-            <p>2017 - 2026<br>우리 이제 결혼해요</p>
-        </div> -->
         <div class="info-section">
             <div class="info-item">
                 <h3>날짜</h3><br>
@@ -517,7 +513,6 @@
             console.log('페이지 로드 시작');
             document.getElementById('loading').classList.add('show');
             
-            // 전역 변수
             const proxyImages = {
                 './pic01.jpg': './pic01_thumb.jpg',
                 './pic02.jpg': './pic02_thumb.jpg',
@@ -530,7 +525,7 @@
             let loadedImages = {};
             let loadedProxies = {};
             
-            // 1단계: pic01_thumb 로딩 확인 (이미 CSS로 로드 시작됨)
+            // 1단계: pic01_thumb
             const pic01Thumb = new Image();
             pic01Thumb.onload = () => {
                 console.log('✓ 1. pic01_thumb 로드 완료');
@@ -543,7 +538,7 @@
             };
             pic01Thumb.src = './pic01_thumb.jpg';
             
-            // 2단계: SunBatang-Light 로드
+            // 2단계: SunBatang-Light
             function loadSunBatangLight() {
                 if (!('FontFace' in window)) {
                     console.log('FontFace API 미지원');
@@ -565,7 +560,7 @@
                 });
             }
             
-            // 3단계: 갤러리 썸네일 로드 (pic02~06 thumb)
+            // 3단계: 갤러리 썸네일 로드
             function loadGalleryThumbs() {
                 const galleryThumbs = [
                     './pic02_thumb.jpg',
@@ -611,7 +606,7 @@
                 setTimeout(loadRemainingFonts, 100);
             }
             
-            // 5단계: 나머지 폰트 로드 (SunBatang-Medium, Pretendard 400)
+            // 5단계: 나머지 폰트 로드
             function loadRemainingFonts() {
                 if (!('FontFace' in window)) {
                     loadPic01Original();
@@ -704,7 +699,7 @@
                 loadNext();
             }
             
-            // 추가: 나머지 폰트들 (Pretendard 100, 200, 300)
+            // 추가: 나머지 폰트들
             function loadExtraFonts() {
                 if (!('FontFace' in window)) return;
                 
@@ -724,7 +719,6 @@
                 });
             }
             
-            // changeBg 함수
             window.changeBg = function(url) {
                 if (loadedImages[url]) {
                     document.getElementById('bg').style.backgroundImage = `url('${url}')`;
@@ -735,7 +729,6 @@
                 }
             };
             
-            // 나머지 함수들...
             window.copyText = function(event, text, type) {
                 event.preventDefault();
                 const messages = {
@@ -827,7 +820,6 @@
                 }
             };
             
-            // 갤러리 드래그
             const gallery = document.querySelector('.gallery');
             if (gallery) {
                 let isDown = false;
@@ -860,7 +852,6 @@
                 });
             }
             
-            // 우클릭/드래그 방지
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
             });
