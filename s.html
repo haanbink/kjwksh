@@ -505,8 +505,8 @@
             <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-orig="./pic05.jpg" alt="사진 5" onclick="openLightbox(4)">
             <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-orig="./pic07.jpg" alt="사진 6" onclick="openLightbox(5)">
             <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-orig="./pic06.jpg" alt="사진 7" onclick="openLightbox(6)">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-orig="./pic08.jpg" alt="사진 8" onclick="openLightbox(7)">
         </div>
-
         <div class="lightbox" id="lightbox">
             <div class="lightbox-content" id="lightbox-content">
             <button class="lightbox-close" onclick="closeLightbox()">×</button>
@@ -516,7 +516,7 @@
             </div>
             
             <button class="lightbox-nav lightbox-next" onclick="changeImage(1)">›</button>
-            <div class="lightbox-counter" id="lightbox-counter">1/6</div>
+            <div class="lightbox-counter" id="lightbox-counter">1/8</div>
         </div>
         </div>
         <div class="info-section">
@@ -568,7 +568,7 @@
                 </p>
             </div>
             <div class="info-item" style="padding-top: 75px;">
-                <h3>마음 전할 곳</h3><br><br><br>
+                <h3>축의금 전하기</h3><br><br><br>
                 <div style="text-align: center;">
                     <h4 class="toggle-btn" onclick="toggleAccount('gr')" style="cursor: pointer; text-align: center;">신랑측</h4>
                 </div><br>
@@ -637,7 +637,7 @@
         // 1. 데이터 정의
         const images = [
             './pic01.jpg', './pic02.jpg', './pic03.jpg', 
-            './pic04.jpg', './pic05.jpg', './pic07.jpg', './pic06.jpg'
+            './pic04.jpg', './pic05.jpg', './pic07.jpg', './pic06.jpg', './pic08.jpg'
         ];
         
         const proxyImages = {
@@ -647,7 +647,8 @@
             './pic04.jpg': './pic04_thumb.jpg',
             './pic05.jpg': './pic05_thumb.jpg',
             './pic07.jpg': './pic07_thumb.jpg',
-            './pic06.jpg': './pic06_thumb.jpg'
+            './pic06.jpg': './pic06_thumb.jpg',
+            './pic08.jpg': './pic08_thumb.jpg'
         };
 
         const fontConfig = [
